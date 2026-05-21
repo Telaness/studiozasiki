@@ -1,65 +1,187 @@
-import Image from "next/image";
+import { getTracks } from "@/lib/microcms";
+import {
+  AppleMusicIcon,
+  AwaIcon,
+  InstagramIcon,
+  SpotifyIcon,
+  XIcon,
+  YouTubeIcon,
+} from "./_components/icons";
 
-export default function Home() {
+function Divider({ label }: { label?: string }) {
   return (
-    <div className="flex flex-col flex-1 items-center justify-center bg-zinc-50 font-sans dark:bg-black">
-      <main className="flex flex-1 w-full max-w-3xl flex-col items-center justify-between py-32 px-16 bg-white dark:bg-black sm:items-start">
-        <Image
-          className="dark:invert"
-          src="/next.svg"
-          alt="Next.js logo"
-          width={100}
-          height={20}
-          priority
-        />
-        <div className="flex flex-col items-center gap-6 text-center sm:items-start sm:text-left">
-          <h1 className="max-w-xs text-3xl font-semibold leading-10 tracking-tight text-black dark:text-zinc-50">
-            To get started, edit the page.tsx file.
-          </h1>
-          <p className="max-w-md text-lg leading-8 text-zinc-600 dark:text-zinc-400">
-            Looking for a starting point or more instructions? Head over to{" "}
-            <a
-              href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-              className="font-medium text-zinc-950 dark:text-zinc-50"
-            >
-              Templates
-            </a>{" "}
-            or the{" "}
-            <a
-              href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-              className="font-medium text-zinc-950 dark:text-zinc-50"
-            >
-              Learning
-            </a>{" "}
-            center.
-          </p>
+    <div className="relative flex items-center gap-6 py-12">
+      <span className="h-px flex-1 hairline" />
+      {label && (
+        <span className="font-jp text-xs tracking-[0.6em] text-bone-dim">
+          {label}
+        </span>
+      )}
+      <span className="h-px flex-1 hairline" />
+    </div>
+  );
+}
+
+export default async function Home() {
+  const tracks = await getTracks();
+
+  return (
+    <div className="relative z-0 flex flex-1 flex-col overflow-x-hidden">
+      {/* ───── TOP / HERO ───── */}
+      <section
+        id="top"
+        className="relative isolate flex min-h-screen overflow-hidden"
+      >
+        <video
+          aria-hidden
+          autoPlay
+          muted
+          loop
+          playsInline
+          preload="auto"
+          className="crt-video absolute inset-0 h-full w-full object-cover"
+        >
+          <source src="/top_background.mp4" type="video/mp4" />
+        </video>
+
+        {/* CRT / old-TV overlays */}
+        <div className="crt-noise pointer-events-none absolute inset-0 z-[2]" />
+        <div className="crt-scanlines pointer-events-none absolute inset-0 z-[3]" />
+        <div className="crt-vignette pointer-events-none absolute inset-0 z-[4]" />
+
+        {/* Bottom fade — smooth transition into discography */}
+        <div className="ink-gradient pointer-events-none absolute inset-x-0 bottom-0 z-[5] h-40" />
+      </section>
+
+      <Divider label="楽曲" />
+
+      {/* ───── DISCOGRAPHY ───── */}
+      <section id="discography" className="relative px-6 py-24 sm:px-12">
+        <div className="mx-auto max-w-6xl">
+          <div className="grid grid-cols-2 gap-4 sm:grid-cols-3 sm:gap-6 lg:grid-cols-4">
+            {tracks.map((t) => (
+              <div
+                key={t.id}
+                className="relative aspect-square overflow-hidden border border-bone/10 bg-ink-soft"
+              >
+                {t.image ? (
+                  // eslint-disable-next-line @next/next/no-img-element
+                  <img
+                    src={`${t.image.url}?fit=crop&w=800&h=800`}
+                    alt={`${t.title}${t.romaji ? ` ${t.romaji}` : ""}`}
+                    className="absolute inset-0 h-full w-full object-cover"
+                    loading="lazy"
+                  />
+                ) : (
+                  <div
+                    aria-hidden
+                    className="absolute inset-0"
+                    style={{
+                      background:
+                        "radial-gradient(ellipse at 50% 40%, rgba(255,255,255,0.06) 0%, transparent 60%), #0a0a0a",
+                    }}
+                  />
+                )}
+
+                {!t.image && (
+                  <div className="absolute inset-0 flex items-center justify-center">
+                    <span className="font-jp text-5xl tracking-[0.1em] text-bone/80 sm:text-6xl">
+                      {t.title}
+                    </span>
+                  </div>
+                )}
+
+                <div className="pointer-events-none absolute inset-0 ring-1 ring-inset ring-bone/5" />
+              </div>
+            ))}
+          </div>
         </div>
-        <div className="flex flex-col gap-4 text-base font-medium sm:flex-row">
+      </section>
+
+      <Divider label="ご連絡" />
+
+      {/* ───── CONTACT ───── */}
+      <section id="contact" className="relative px-6 py-24 sm:px-12">
+        <div className="mx-auto max-w-2xl text-center">
           <a
-            className="flex h-12 w-full items-center justify-center gap-2 rounded-full bg-foreground px-5 text-background transition-colors hover:bg-[#383838] dark:hover:bg-[#ccc] md:w-[158px]"
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
+            href="mailto:studiozasiki@gmail.com"
+            className="inline-block font-en text-lg italic tracking-[0.3em] text-bone underline decoration-bone/40 underline-offset-8 transition hover:text-ember"
           >
-            <Image
-              className="dark:invert"
-              src="/vercel.svg"
-              alt="Vercel logomark"
-              width={16}
-              height={16}
-            />
-            Deploy Now
-          </a>
-          <a
-            className="flex h-12 w-full items-center justify-center rounded-full border border-solid border-black/[.08] px-5 transition-colors hover:border-transparent hover:bg-black/[.04] dark:border-white/[.145] dark:hover:bg-[#1a1a1a] md:w-[158px]"
-            href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Documentation
+            studiozasiki@gmail.com
           </a>
         </div>
-      </main>
+      </section>
+
+      {/* ───── FOOTER ───── */}
+      <footer className="relative mt-16 border-t border-bone/10 bg-ink-soft/40 px-6 py-16">
+        <div className="mx-auto flex max-w-2xl flex-col items-center gap-8">
+          <div className="flex items-center gap-8 text-bone-dim">
+            <a
+              href="https://open.spotify.com/intl-ja/artist/2S4BSVsysMfWuE1NQPdkzH"
+              target="_blank"
+              rel="noopener noreferrer"
+              aria-label="Spotify"
+              className="transition hover:text-bone"
+            >
+              <SpotifyIcon className="h-5 w-5" />
+            </a>
+            <a
+              href="https://music.apple.com/jp/artist/zasiki/1842171650"
+              target="_blank"
+              rel="noopener noreferrer"
+              aria-label="Apple Music"
+              className="transition hover:text-bone"
+            >
+              <AppleMusicIcon className="h-5 w-5" />
+            </a>
+            <a
+              href="https://s.awa.fm/album/950b7380932fe8540379"
+              target="_blank"
+              rel="noopener noreferrer"
+              aria-label="AWA"
+              className="transition hover:text-bone"
+            >
+              <AwaIcon className="h-5 w-5" />
+            </a>
+          </div>
+
+          <span className="h-px w-12 hairline" />
+
+          <div className="flex items-center gap-8 text-bone-dim">
+            <a
+              href="https://x.com/studio_zasiki"
+              target="_blank"
+              rel="noopener noreferrer"
+              aria-label="X"
+              className="transition hover:text-bone"
+            >
+              <XIcon className="h-5 w-5" />
+            </a>
+            <a
+              href="https://www.instagram.com/studio_zasiki/"
+              target="_blank"
+              rel="noopener noreferrer"
+              aria-label="Instagram"
+              className="transition hover:text-bone"
+            >
+              <InstagramIcon className="h-5 w-5" />
+            </a>
+            <a
+              href="https://www.youtube.com/@studio_zasiki"
+              target="_blank"
+              rel="noopener noreferrer"
+              aria-label="YouTube"
+              className="transition hover:text-bone"
+            >
+              <YouTubeIcon className="h-5 w-5" />
+            </a>
+          </div>
+
+          <div className="font-en text-[0.6rem] uppercase tracking-[0.4em] text-mist">
+            © Studio Zasiki
+          </div>
+        </div>
+      </footer>
     </div>
   );
 }
