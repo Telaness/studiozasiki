@@ -1,36 +1,89 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Studio Zasiki — Zasiki Official Web
 
-## Getting Started
+シンガーソングライター **Zasiki(座敷)** の公式サイトです。Next.js 16 (App Router) + React 19 + Tailwind CSS v4 で構築しています。
 
-First, run the development server:
+楽曲データは [microCMS](https://microcms.io) から取得し、未設定時はリポジトリ同梱のフォールバックを表示します。
+
+## 必要環境
+
+- Node.js 20 以上
+- npm(または pnpm / yarn / bun)
+
+## セットアップ
 
 ```bash
+npm install
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+[http://localhost:3000](http://localhost:3000) を開くとローカルプレビューが起動します。
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+## 環境変数
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+`.env.local` をプロジェクトルートに作成し、必要な値を設定してください。
 
-## Learn More
+| 変数 | 用途 | 必須 |
+| --- | --- | :-: |
+| `NEXT_PUBLIC_SITE_URL` | 本番サイトの URL。OG / canonical / sitemap / robots に反映 | 任意(既定 `https://studio-zasiki.com`) |
+| `MICROCMS_SERVICE_DOMAIN` | microCMS サービスドメイン(`xxxx.microcms.io` の `xxxx` 部分) | 任意 |
+| `MICROCMS_API_KEY` | microCMS の API キー | 任意 |
 
-To learn more about Next.js, take a look at the following resources:
+`MICROCMS_*` を設定しない場合は `lib/microcms.ts` のフォールバック楽曲(私 / 灯り / 春)が表示されます。
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+## microCMS スキーマ
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+API 名: `tracks`(リスト形式)
 
-## Deploy on Vercel
+| フィールド ID | 種別 | 説明 |
+| --- | --- | --- |
+| `title` | テキスト | 曲名(日本語) |
+| `romaji` | テキスト(任意) | ローマ字表記 |
+| `href` | テキスト(任意) | 配信リンクなど |
+| `image` | 画像(任意) | ジャケット |
+| `releasedAt` | 日時(任意) | リリース日(並び順に使用) |
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+`orders=-releasedAt&limit=100` で取得しています。
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+## スクリプト
+
+| コマンド | 内容 |
+| --- | --- |
+| `npm run dev` | 開発サーバー起動 |
+| `npm run build` | 本番ビルド |
+| `npm run start` | 本番サーバー起動 |
+| `npm run lint` | ESLint 実行 |
+
+## ディレクトリ構成
+
+```
+app/
+  _components/icons.tsx   配信サービス / SNS の SVG アイコン
+  globals.css             Tailwind v4 のテーマ・CRT エフェクト・各種アニメーション
+  layout.tsx              ルートレイアウト / メタデータ / JSON-LD
+  page.tsx                トップページ(ヒーロー・楽曲・連絡先)
+  robots.ts               /robots.txt を生成
+  sitemap.ts              /sitemap.xml を生成
+lib/
+  microcms.ts             楽曲データの取得とフォールバック
+  site.ts                 SITE_URL / SITE_NAME などの共有定数
+public/
+  music/                  ローカルフォールバック用ジャケット
+  top_background.mp4      ヒーローの背景動画
+  zasiki_arsha.jpg        OG / アーティスト画像
+```
+
+## SEO
+
+- `app/layout.tsx` で `metadata` / `viewport` / Open Graph / Twitter Card / robots / icons / keywords を一括設定
+- `MusicGroup` の JSON-LD を `<body>` に出力
+- `app/robots.ts` と `app/sitemap.ts` で `/robots.txt` と `/sitemap.xml` を生成
+
+ドメインが変わる場合は `NEXT_PUBLIC_SITE_URL` を設定すれば canonical / OG / sitemap / robots すべてに反映されます。
+
+## デプロイ
+
+[Vercel](https://vercel.com/new) へのデプロイを想定しています。`NEXT_PUBLIC_SITE_URL` と microCMS の環境変数をプロジェクト設定に登録してください。
+
+## ライセンス
+
+© Studio Zasiki. All rights reserved.
