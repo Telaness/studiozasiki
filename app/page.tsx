@@ -1,3 +1,4 @@
+import Link from "next/link";
 import { getTracks } from "@/lib/microcms";
 import {
   AppleMusicIcon,
@@ -60,16 +61,18 @@ export default async function Home() {
         <div className="mx-auto max-w-6xl">
           <div className="grid grid-cols-2 gap-4 sm:grid-cols-3 sm:gap-6 lg:grid-cols-4">
             {tracks.map((t) => (
-              <div
+              <Link
                 key={t.id}
-                className="relative aspect-square overflow-hidden border border-bone/10 bg-ink-soft"
+                href={`/tracks/${t.id}`}
+                aria-label={`${t.title}${t.romaji ? ` (${t.romaji})` : ""}`}
+                className="group relative aspect-square overflow-hidden border border-bone/10 bg-ink-soft transition hover:border-bone/30"
               >
                 {t.image ? (
                   // eslint-disable-next-line @next/next/no-img-element
                   <img
                     src={`${t.image.url}?fit=crop&w=800&h=800`}
                     alt={`${t.title}${t.romaji ? ` ${t.romaji}` : ""}`}
-                    className="absolute inset-0 h-full w-full object-cover"
+                    className="absolute inset-0 h-full w-full object-cover transition duration-500 group-hover:scale-[1.02]"
                     loading="lazy"
                   />
                 ) : (
@@ -92,7 +95,7 @@ export default async function Home() {
                 )}
 
                 <div className="pointer-events-none absolute inset-0 ring-1 ring-inset ring-bone/5" />
-              </div>
+              </Link>
             ))}
           </div>
         </div>
