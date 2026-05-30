@@ -4,7 +4,7 @@ export const SITE_URL =
 export const SITE_NAME = "Studio Zasiki";
 
 export const SITE_DESCRIPTION =
-  "Zasiki(座敷)— 薄闇に佇むシンガーソングライター。幻想と憂いを宿した歌声で、夜の物語を紡ぐ。最新楽曲・ディスコグラフィー・お問い合わせはこちら。";
+  "シンガーソングライター Zasiki のオフィシャルサイト。最新リリース、ディスコグラフィー、お問い合わせはこちらから。";
 
 export const SOCIAL_LINKS = [
   "https://open.spotify.com/intl-ja/artist/2S4BSVsysMfWuE1NQPdkzH",

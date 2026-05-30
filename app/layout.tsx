@@ -27,13 +27,13 @@ const cinzel = Cinzel({
   subsets: ["latin"],
 });
 
-const SITE_TITLE = "Zasiki Official Web";
+const SITE_TITLE = "Zasiki Official Website";
 
 export const metadata: Metadata = {
   metadataBase: new URL(SITE_URL),
   title: {
     default: SITE_TITLE,
-    template: "%s | Zasiki Official Web",
+    template: "%s | Zasiki Official Website",
   },
   description: SITE_DESCRIPTION,
   applicationName: SITE_NAME,
