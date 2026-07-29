@@ -118,9 +118,21 @@ function pickLinks(raw: RawMicroCmsTrack): TrackLinks | undefined {
   return hasAny ? links : undefined;
 }
 
+// microCMS のコンテンツ ID は自動生成の英数字なので、URL には romaji を使う。
+function pickSlug(raw: RawMicroCmsTrack): string {
+  const romaji = raw.romaji ?? raw.reading;
+  if (!romaji) return raw.id;
+  const slug = romaji
+    .trim()
+    .toLowerCase()
+    .replace(/[^a-z0-9]+/g, "-")
+    .replace(/^-+|-+$/g, "");
+  return slug || raw.id;
+}
+
 function normalize(raw: RawMicroCmsTrack): Track {
   return {
-    id: raw.id,
+    id: pickSlug(raw),
     title: raw.title ?? raw.name ?? raw.id,
     romaji: raw.romaji ?? raw.reading,
     href: raw.href ?? raw.url,
