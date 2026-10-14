@@ -1,7 +1,7 @@
 "use client";
 
 import Link from "next/link";
-import { useState } from "react";
+import { useState, ViewTransition } from "react";
 import type { TrackKind } from "@/lib/microcms";
 
 export type BookEntry = {
@@ -88,13 +88,15 @@ export function TrackBook({ entries }: { entries: BookEntry[] }) {
                       className={`relative aspect-square overflow-hidden border border-bone/20 bg-ink-soft shadow-[0_6px_18px_rgba(0,0,0,0.6)] transition duration-300 group-hover:rotate-0 group-hover:-translate-y-1 group-hover:border-bone/50 ${TILTS[i % TILTS.length]}`}
                     >
                       {t.imageUrl ? (
-                        // eslint-disable-next-line @next/next/no-img-element
-                        <img
-                          src={`${t.imageUrl}?fit=crop&w=400&h=400`}
-                          alt=""
-                          className="absolute inset-0 h-full w-full object-cover"
-                          loading="lazy"
-                        />
+                        <ViewTransition name={`jacket-${t.id}`} share="jacket">
+                          {/* eslint-disable-next-line @next/next/no-img-element */}
+                          <img
+                            src={`${t.imageUrl}?fit=crop&w=800&h=800`}
+                            alt=""
+                            className="absolute inset-0 h-full w-full object-cover"
+                            loading="lazy"
+                          />
+                        </ViewTransition>
                       ) : (
                         <div className="absolute inset-0 flex items-center justify-center">
                           <span className="font-jp text-3xl text-bone/80">{t.title}</span>

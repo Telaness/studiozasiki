@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { notFound } from "next/navigation";
+import { ViewTransition } from "react";
 import { getTrack, getTracks, type Track } from "@/lib/microcms";
 import { ARTIST_JSON_LD, OPEN_GRAPH_BASE, SITE_URL } from "@/lib/site";
 import {
@@ -101,12 +102,14 @@ export default async function TrackPage({ params }: Props) {
 
           <div className="relative mx-auto aspect-square w-full max-w-xs overflow-hidden border border-bone/10 bg-ink-soft sm:max-w-sm">
             {track.image ? (
-              // eslint-disable-next-line @next/next/no-img-element
-              <img
-                src={`${track.image.url}?fit=crop&w=800&h=800`}
-                alt={`${track.title}${track.romaji ? ` ${track.romaji}` : ""}`}
-                className="absolute inset-0 h-full w-full object-cover"
-              />
+              <ViewTransition name={`jacket-${track.id}`} share="jacket">
+                {/* eslint-disable-next-line @next/next/no-img-element */}
+                <img
+                  src={`${track.image.url}?fit=crop&w=800&h=800`}
+                  alt={`${track.title}${track.romaji ? ` ${track.romaji}` : ""}`}
+                  className="absolute inset-0 h-full w-full object-cover"
+                />
+              </ViewTransition>
             ) : (
               <div className="absolute inset-0 flex items-center justify-center">
                 <span className="font-jp text-6xl tracking-[0.1em] text-bone/80">

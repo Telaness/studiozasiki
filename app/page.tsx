@@ -1,4 +1,5 @@
 import Link from "next/link";
+import { ViewTransition } from "react";
 import { getTracks } from "@/lib/microcms";
 import {
   AppleMusicIcon,
@@ -109,13 +110,15 @@ export default async function Home() {
                 className="group relative aspect-square overflow-hidden border border-bone/10 bg-ink-soft transition hover:border-bone/30"
               >
                 {t.image ? (
-                  // eslint-disable-next-line @next/next/no-img-element
-                  <img
-                    src={`${t.image.url}?fit=crop&w=800&h=800`}
-                    alt={`${t.title}${t.romaji ? ` ${t.romaji}` : ""}`}
-                    className="absolute inset-0 h-full w-full object-cover transition duration-500 group-hover:scale-[1.02]"
-                    loading="lazy"
-                  />
+                  <ViewTransition name={`jacket-${t.id}`} share="jacket">
+                    {/* eslint-disable-next-line @next/next/no-img-element */}
+                    <img
+                      src={`${t.image.url}?fit=crop&w=800&h=800`}
+                      alt={`${t.title}${t.romaji ? ` ${t.romaji}` : ""}`}
+                      className="absolute inset-0 h-full w-full object-cover transition duration-500 group-hover:scale-[1.02]"
+                      loading="lazy"
+                    />
+                  </ViewTransition>
                 ) : (
                   <div
                     aria-hidden

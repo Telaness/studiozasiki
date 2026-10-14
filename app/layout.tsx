@@ -1,5 +1,4 @@
 import type { Metadata, Viewport } from "next";
-import { ViewTransition } from "react";
 import { Shippori_Mincho_B1, Cormorant_Garamond, Cinzel } from "next/font/google";
 import {
   SITE_DESCRIPTION,
@@ -8,6 +7,7 @@ import {
   ARTIST_JSON_LD,
   OPEN_GRAPH_BASE,
 } from "@/lib/site";
+import { PageTransition } from "./_components/page-transition";
 import "./globals.css";
 
 const shippori = Shippori_Mincho_B1({
@@ -134,7 +134,7 @@ export default function RootLayout({
           type="application/ld+json"
           dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
         />
-        <ViewTransition default="page-fade">{children}</ViewTransition>
+        <PageTransition>{children}</PageTransition>
       </body>
     </html>
   );
