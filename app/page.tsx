@@ -14,9 +14,9 @@ function Divider({ label }: { label?: string }) {
     <div className="relative flex items-center gap-6 py-12">
       <span className="h-px flex-1 hairline" />
       {label && (
-        <span className="font-jp text-xs tracking-[0.6em] text-bone-dim">
+        <h2 className="font-jp text-xs font-normal tracking-[0.6em] text-bone-dim">
           {label}
-        </span>
+        </h2>
       )}
       <span className="h-px flex-1 hairline" />
     </div>
@@ -45,6 +45,18 @@ export default async function Home() {
           <source src="/top_background.mp4" type="video/mp4" />
         </video>
 
+        {/* Site logo */}
+        <h1 className="absolute inset-0 z-[1] flex items-center justify-center px-10">
+          {/* eslint-disable-next-line @next/next/no-img-element */}
+          <img
+            src="/logo-trimmed.png"
+            alt="Zasiki（ざしき）"
+            width={812}
+            height={534}
+            className="w-full max-w-[16rem] sm:max-w-sm"
+          />
+        </h1>
+
         {/* CRT / old-TV overlays */}
         <div className="crt-noise pointer-events-none absolute inset-0 z-[2]" />
         <div className="crt-scanlines pointer-events-none absolute inset-0 z-[3]" />
@@ -52,6 +64,35 @@ export default async function Home() {
 
         {/* Bottom fade — smooth transition into discography */}
         <div className="ink-gradient pointer-events-none absolute inset-x-0 bottom-0 z-[5] h-40" />
+      </section>
+
+      <Divider label="プロフィール" />
+
+      {/* ───── PROFILE ───── */}
+      <section id="profile" className="relative px-6 py-16 sm:px-12">
+        <div className="mx-auto flex max-w-4xl flex-col items-center gap-8 sm:flex-row sm:gap-12">
+          {/* 端を背景に溶かして境目を消す */}
+          {/* eslint-disable-next-line @next/next/no-img-element */}
+          <img
+            src="/zasiki_arsha.jpg"
+            alt="シンガーソングライター Zasiki（ざしき）のアーティスト写真"
+            width={160}
+            height={160}
+            loading="lazy"
+            className="fade-edges h-64 w-64 shrink-0 object-cover sm:h-80 sm:w-80"
+          />
+          <div className="space-y-6 text-center font-jp text-sm leading-loose tracking-[0.12em] text-bone-dim sm:text-left sm:text-base">
+            <p>
+              Zasiki（ざしき）は、作詞・作曲・歌唱を自ら手がけるシンガーソングライター・アーティストです。
+            </p>
+            <p>
+              制作では「黄泉にわたらない私の感情を大切にしよう」と考え、現代を日本人の私として生きている世界観や思考を「無」と定義し、制作のテーマとしております。
+            </p>
+            <p>
+              日本人独自の感性、思考の形態を理解し、「無」を楽曲の中に作りこむ制作を行っております。
+            </p>
+          </div>
+        </div>
       </section>
 
       <Divider label="楽曲" />
@@ -98,10 +139,19 @@ export default async function Home() {
               </Link>
             ))}
           </div>
+
+          <div className="mt-16 text-center">
+            <Link
+              href="/tracks"
+              className="font-jp text-sm tracking-[0.4em] text-bone-dim transition hover:text-bone"
+            >
+              楽曲一覧 →
+            </Link>
+          </div>
         </div>
       </section>
 
-      <Divider label="ご連絡" />
+      <Divider label="お問い合わせはこちらまで" />
 
       {/* ───── CONTACT ───── */}
       <section id="contact" className="relative px-6 py-24 sm:px-12">
@@ -118,6 +168,22 @@ export default async function Home() {
       {/* ───── FOOTER ───── */}
       <footer className="relative mt-16 border-t border-bone/10 bg-ink-soft/40 px-6 py-16">
         <div className="mx-auto flex max-w-2xl flex-col items-center gap-8">
+          <a
+            href="#top"
+            aria-label="Zasiki"
+            className="opacity-80 transition hover:opacity-100"
+          >
+            {/* eslint-disable-next-line @next/next/no-img-element */}
+            <img
+              src="/logo-trimmed.png"
+              alt=""
+              width={812}
+              height={534}
+              loading="lazy"
+              className="h-auto w-24"
+            />
+          </a>
+
           <div className="flex items-center gap-8 text-bone-dim">
             <a
               href="https://open.spotify.com/intl-ja/artist/2S4BSVsysMfWuE1NQPdkzH"

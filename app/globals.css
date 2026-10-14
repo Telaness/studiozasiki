@@ -335,3 +335,82 @@ body::after {
 ::-webkit-scrollbar-thumb:hover {
   background: #3a3a3a;
 }
+
+/* ───── Notebook (楽曲一覧) ───── */
+
+.notebook {
+  background-color: var(--color-ink-soft);
+  background-image: repeating-linear-gradient(
+    to bottom,
+    transparent 0,
+    transparent calc(2rem - 1px),
+    rgba(255, 255, 255, 0.05) calc(2rem - 1px),
+    rgba(255, 255, 255, 0.05) 2rem
+  );
+}
+
+.notebook-holes {
+  background-image: radial-gradient(
+    circle 7px at center,
+    var(--color-ink) 0 5px,
+    rgba(255, 255, 255, 0.2) 5.5px 6.5px,
+    transparent 7px
+  );
+  background-size: 100% 3rem;
+  background-repeat: repeat-y;
+}
+
+/* 付箋 — 紙の質感と、上端のわずかな反り */
+.sticky-note {
+  background-image: linear-gradient(
+    180deg,
+    rgba(255, 255, 255, 0.35) 0%,
+    rgba(255, 255, 255, 0) 30%,
+    rgba(0, 0, 0, 0.08) 100%
+  );
+  box-shadow:
+    0 -2px 6px rgba(0, 0, 0, 0.35),
+    inset 0 1px 0 rgba(255, 255, 255, 0.5);
+  clip-path: polygon(0 4px, 100% 0, 100% 100%, 0 100%);
+}
+
+/* 画像をいびつな形に切り抜き、端を背景へぼかして境目を消す */
+.fade-edges {
+  -webkit-mask-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100' preserveAspectRatio='none'><filter id='b' x='-30%' y='-30%' width='160%' height='160%'><feGaussianBlur stdDeviation='2.8'/></filter><path filter='url(%23b)' d='M48 5 C56 4 60 13 67 10 C76 6 84 12 85 22 C86 30 95 33 93 43 C91 51 84 53 89 62 C94 72 88 83 77 82 C70 81 68 91 58 92 C49 93 47 85 39 89 C29 94 19 89 18 79 C17 71 7 70 8 60 C9 51 16 49 11 40 C6 30 13 20 23 21 C31 22 33 7 48 5 Z'/></svg>");
+  mask-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100' preserveAspectRatio='none'><filter id='b' x='-30%' y='-30%' width='160%' height='160%'><feGaussianBlur stdDeviation='2.8'/></filter><path filter='url(%23b)' d='M48 5 C56 4 60 13 67 10 C76 6 84 12 85 22 C86 30 95 33 93 43 C91 51 84 53 89 62 C94 72 88 83 77 82 C70 81 68 91 58 92 C49 93 47 85 39 89 C29 94 19 89 18 79 C17 71 7 70 8 60 C9 51 16 49 11 40 C6 30 13 20 23 21 C31 22 33 7 48 5 Z'/></svg>");
+  -webkit-mask-size: 100% 100%;
+  mask-size: 100% 100%;
+  -webkit-mask-repeat: no-repeat;
+  mask-repeat: no-repeat;
+}
+
+/* ───── Page transition — ふわっと消えて、ふわっと現れる ───── */
+
+::view-transition-old(.page-fade) {
+  animation: 380ms ease-in both page-fade-out;
+}
+
+::view-transition-new(.page-fade) {
+  animation: 520ms ease-out 260ms both page-fade-in;
+}
+
+@keyframes page-fade-out {
+  to {
+    opacity: 0;
+    filter: blur(4px);
+  }
+}
+
+@keyframes page-fade-in {
+  from {
+    opacity: 0;
+    filter: blur(4px);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  ::view-transition-old(.page-fade),
+  ::view-transition-new(.page-fade) {
+    animation: none;
+  }
+}

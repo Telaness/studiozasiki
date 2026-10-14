@@ -1,7 +1,8 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { notFound } from "next/navigation";
-import { getTrack, getTracks } from "@/lib/microcms";
+import { getTrack, getTracks, type Track } from "@/lib/microcms";
+import { ARTIST_JSON_LD, OPEN_GRAPH_BASE, SITE_URL } from "@/lib/site";
 import {
   AppleMusicIcon,
   AwaIcon,
@@ -18,16 +19,45 @@ export async function generateStaticParams() {
   return tracks.map((t) => ({ id: t.id }));
 }
 
+function releaseDate(iso?: string) {
+  if (!iso) return null;
+  return new Date(iso).toLocaleDateString("ja-JP", {
+    timeZone: "Asia/Tokyo",
+    year: "numeric",
+    month: "long",
+    day: "numeric",
+  });
+}
+
+function describe(track: Track) {
+  const name = track.romaji ? `「${track.title}」（${track.romaji}）` : `「${track.title}」`;
+  const date = releaseDate(track.releasedAt);
+  return `シンガーソングライター Zasiki（ざしき）の楽曲${name}。${date ? `${date}リリース。` : ""}Spotify、Apple Music などで配信中。`;
+}
+
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const { id } = await params;
   const track = await getTrack(id);
   if (!track) return {};
   const title = track.romaji ? `${track.title} / ${track.romaji}` : track.title;
+  const description = describe(track);
   return {
     title,
+    description,
+    alternates: { canonical: `/tracks/${track.id}` },
     openGraph: {
-      title,
+      ...OPEN_GRAPH_BASE,
+      type: "music.song",
+      title: `${title} | Zasiki（ざしき）`,
+      description,
+      url: `/tracks/${track.id}`,
       images: track.image ? [{ url: track.image.url, alt: track.title }] : undefined,
+    },
+    twitter: {
+      card: "summary_large_image",
+      title: `${title} | Zasiki（ざしき）`,
+      description,
+      images: track.image ? [track.image.url] : undefined,
     },
   };
 }
@@ -39,13 +69,30 @@ export default async function TrackPage({ params }: Props) {
 
   const links = track.links ?? {};
 
+  const jsonLd = {
+    "@context": "https://schema.org",
+    "@type": "MusicRecording",
+    name: track.title,
+    alternateName: track.romaji,
+    url: `${SITE_URL}/tracks/${track.id}`,
+    description: describe(track),
+    image: track.image?.url,
+    datePublished: track.releasedAt,
+    byArtist: { "@id": ARTIST_JSON_LD["@id"], name: ARTIST_JSON_LD.name },
+    sameAs: Object.values(links).filter(Boolean),
+  };
+
   return (
     <div className="relative z-0 flex flex-1 flex-col overflow-x-hidden">
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
+      />
       <section className="relative px-6 py-20 sm:px-12 sm:py-28">
         <div className="mx-auto max-w-3xl">
           <div className="mb-12">
             <Link
-              href="/#discography"
+              href="/tracks"
               className="font-en text-xs tracking-[0.4em] text-bone-dim transition hover:text-bone"
             >
               ← BACK

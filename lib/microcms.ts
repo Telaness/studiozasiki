@@ -11,6 +11,8 @@ export type TrackLinks = {
   youtube?: string;
 };
 
+export type TrackKind = "single" | "album" | "collab";
+
 export type Track = {
   id: string;
   title: string;
@@ -20,6 +22,7 @@ export type Track = {
   releasedAt?: string;
   credits?: string;
   links?: TrackLinks;
+  kind: TrackKind;
 };
 
 const ARTIST_LINKS: TrackLinks = {
@@ -38,6 +41,7 @@ const FALLBACK: Track[] = [
     image: { url: "/music/01_watashi/jacket.jpg", width: 1200, height: 1200 },
     credits: "Words & Music: Zasiki",
     links: ARTIST_LINKS,
+    kind: "single",
   },
   {
     id: "akari",
@@ -47,6 +51,7 @@ const FALLBACK: Track[] = [
     image: { url: "/music/02_akari/jacket.png", width: 1200, height: 1200 },
     credits: "Words & Music: Zasiki",
     links: ARTIST_LINKS,
+    kind: "single",
   },
   {
     id: "haru",
@@ -56,6 +61,7 @@ const FALLBACK: Track[] = [
     image: { url: "/music/03_haru/jacket.png", width: 1200, height: 1200 },
     credits: "Words & Music: Zasiki",
     links: ARTIST_LINKS,
+    kind: "single",
   },
 ];
 
@@ -99,6 +105,10 @@ type RawMicroCmsTrack = {
   youtube?: string;
   youtubeUrl?: string;
   youTube?: string;
+  // シングル・EP / アルバム / コラボ — microCMS のセレクトフィールドは string[] で返る
+  kind?: string | string[];
+  type?: string | string[];
+  category?: string | string[];
 };
 
 function pickImage(raw: RawMicroCmsTrack): MicroCmsImage | undefined {
@@ -130,6 +140,13 @@ function pickSlug(raw: RawMicroCmsTrack): string {
   return slug || raw.id;
 }
 
+function pickKind(raw: RawMicroCmsTrack): TrackKind {
+  const values = [raw.kind, raw.type, raw.category].flat().filter(Boolean) as string[];
+  if (values.some((v) => /コラボ|collab|feat/i.test(v))) return "collab";
+  if (values.some((v) => /アルバム|album/i.test(v))) return "album";
+  return "single";
+}
+
 function normalize(raw: RawMicroCmsTrack): Track {
   return {
     id: pickSlug(raw),
@@ -140,6 +157,7 @@ function normalize(raw: RawMicroCmsTrack): Track {
     releasedAt: raw.releasedAt ?? raw.releaseDate ?? raw.publishedAt,
     credits: raw.credits ?? raw.credit,
     links: pickLinks(raw),
+    kind: pickKind(raw),
   };
 }
 

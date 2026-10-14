@@ -1,10 +1,12 @@
 import type { Metadata, Viewport } from "next";
+import { ViewTransition } from "react";
 import { Shippori_Mincho_B1, Cormorant_Garamond, Cinzel } from "next/font/google";
 import {
   SITE_DESCRIPTION,
   SITE_NAME,
   SITE_URL,
-  SOCIAL_LINKS,
+  ARTIST_JSON_LD,
+  OPEN_GRAPH_BASE,
 } from "@/lib/site";
 import "./globals.css";
 
@@ -27,13 +29,13 @@ const cinzel = Cinzel({
   subsets: ["latin"],
 });
 
-const SITE_TITLE = "Zasiki Official Website";
+const SITE_TITLE = "Zasiki（ざしき）Official Website | シンガーソングライター";
 
 export const metadata: Metadata = {
   metadataBase: new URL(SITE_URL),
   title: {
     default: SITE_TITLE,
-    template: "%s | Zasiki Official Website",
+    template: "%s | Zasiki（ざしき）Official Website",
   },
   description: SITE_DESCRIPTION,
   applicationName: SITE_NAME,
@@ -50,6 +52,9 @@ export const metadata: Metadata = {
     "スタジオ座敷",
     "シンガー",
     "シンガーソングライター",
+    "アーティスト",
+    "Zasiki シンガーソングライター",
+    "ざしき シンガーソングライター",
     "歌手",
     "J-POP",
     "邦楽",
@@ -61,24 +66,15 @@ export const metadata: Metadata = {
     canonical: "/",
   },
   openGraph: {
-    type: "website",
-    siteName: SITE_NAME,
+    ...OPEN_GRAPH_BASE,
     title: SITE_TITLE,
     description: SITE_DESCRIPTION,
     url: SITE_URL,
-    locale: "ja_JP",
-    images: [
-      {
-        url: "/zasiki_arsha.jpg",
-        alt: "Zasiki — 座敷",
-      },
-    ],
   },
   twitter: {
     card: "summary_large_image",
     title: SITE_TITLE,
     description: SITE_DESCRIPTION,
-    images: ["/zasiki_arsha.jpg"],
     site: "@studio_zasiki",
     creator: "@studio_zasiki",
   },
@@ -109,14 +105,18 @@ export const viewport: Viewport = {
 
 const jsonLd = {
   "@context": "https://schema.org",
-  "@type": "MusicGroup",
-  name: "Zasiki",
-  alternateName: ["座敷", "Studio Zasiki"],
-  url: SITE_URL,
-  image: `${SITE_URL}/zasiki_arsha.jpg`,
-  email: "studiozasiki@gmail.com",
-  genre: ["J-Pop", "Indie"],
-  sameAs: SOCIAL_LINKS,
+  "@graph": [
+    {
+      "@type": "WebSite",
+      "@id": `${SITE_URL}/#website`,
+      name: "Zasiki Official Website",
+      alternateName: ["Zasiki", "ざしき", "ザシキ", "Studio Zasiki"],
+      url: SITE_URL,
+      inLanguage: "ja",
+      publisher: { "@id": `${SITE_URL}/#artist` },
+    },
+    ARTIST_JSON_LD,
+  ],
 };
 
 export default function RootLayout({
@@ -134,7 +134,7 @@ export default function RootLayout({
           type="application/ld+json"
           dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
         />
-        {children}
+        <ViewTransition default="page-fade">{children}</ViewTransition>
       </body>
     </html>
   );
