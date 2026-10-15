@@ -4,7 +4,7 @@ export const SITE_URL =
 export const SITE_NAME = "Zasiki";
 
 export const SITE_DESCRIPTION =
-  "Zasiki（ざしき／ザシキ）のオフィシャルサイト。作詞・作曲・歌唱を自ら手がけるシンガーソングライター・アーティスト Zasiki の楽曲、プロフィール、お問い合わせ先を掲載しています。";
+  "Zasiki（ざしき／ザシキ）のオフィシャルサイト。作詞・作曲・歌唱を自ら手がけるアーティスト Zasiki の楽曲、プロフィール、お問い合わせ先を掲載しています。";
 
 export const SOCIAL_LINKS = [
   "https://open.spotify.com/intl-ja/artist/2S4BSVsysMfWuE1NQPdkzH",
@@ -22,7 +22,7 @@ export const ARTIST_JSON_LD = {
   name: "Zasiki",
   alternateName: ["ざしき", "ザシキ", "Studio Zasiki"],
   description:
-    "作詞・作曲・歌唱を自ら手がけるシンガーソングライター・アーティスト。",
+    "作詞・作曲・歌唱を自ら手がけるアーティスト。",
   url: SITE_URL,
   image: `${SITE_URL}/zasiki_arsha.jpg`,
   logo: `${SITE_URL}/logo-trimmed.png`,

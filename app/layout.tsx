@@ -29,7 +29,7 @@ const cinzel = Cinzel({
   subsets: ["latin"],
 });
 
-const SITE_TITLE = "Zasiki（ざしき）Official Website | シンガーソングライター";
+const SITE_TITLE = "Zasiki（ざしき）Official Website";
 
 export const metadata: Metadata = {
   metadataBase: new URL(SITE_URL),

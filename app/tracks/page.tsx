@@ -6,7 +6,7 @@ import { TrackBook, type BookEntry } from "./_components/track-book";
 
 const TITLE = "楽曲一覧";
 const DESCRIPTION =
-  "シンガーソングライター Zasiki（ざしき）の楽曲一覧。シングル・EP、アルバム、コラボ作品をまとめています。";
+  "Zasiki（ざしき）の楽曲一覧。シングル・EP、アルバム、コラボ作品をまとめています。";
 
 export const metadata: Metadata = {
   title: TITLE,

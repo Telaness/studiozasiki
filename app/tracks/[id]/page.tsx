@@ -33,7 +33,7 @@ function releaseDate(iso?: string) {
 function describe(track: Track) {
   const name = track.romaji ? `「${track.title}」（${track.romaji}）` : `「${track.title}」`;
   const date = releaseDate(track.releasedAt);
-  return `シンガーソングライター Zasiki（ざしき）の楽曲${name}。${date ? `${date}リリース。` : ""}Spotify、Apple Music などで配信中。`;
+  return `Zasiki（ざしき）の楽曲${name}。${date ? `${date}リリース。` : ""}Spotify、Apple Music などで配信中。`;
 }
 
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
