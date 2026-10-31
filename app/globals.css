@@ -418,6 +418,8 @@ body::after {
 }
 
 /* ジャケットは一覧の位置から詳細の位置へそのまま移動する */
+/* ジャケットのリンクと詳細の BACK だけが jacket-morph を付ける。TOP へ戻るときやブラウザバックでは
+   画面外の一覧へ飛んでいくジャケットが残って見えるため、移動させずページと一緒にフェードさせる */
 ::view-transition-group(.jacket) {
   animation-duration: 650ms;
   animation-timing-function: cubic-bezier(0.22, 1, 0.36, 1);

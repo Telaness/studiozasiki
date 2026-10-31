@@ -81,6 +81,7 @@ export function TrackBook({ entries }: { entries: BookEntry[] }) {
                 {t ? (
                   <Link
                     href={`/tracks/${t.id}`}
+                    transitionTypes={["jacket-morph"]}
                     aria-label={`${no} ${t.title}${t.romaji ? ` (${t.romaji})` : ""}`}
                     className="group block"
                   >
@@ -88,7 +89,7 @@ export function TrackBook({ entries }: { entries: BookEntry[] }) {
                       className={`relative aspect-square overflow-hidden border border-bone/20 bg-ink-soft shadow-[0_6px_18px_rgba(0,0,0,0.6)] transition duration-300 group-hover:rotate-0 group-hover:-translate-y-1 group-hover:border-bone/50 ${TILTS[i % TILTS.length]}`}
                     >
                       {t.imageUrl ? (
-                        <ViewTransition name={`jacket-${t.id}`} share="jacket">
+                        <ViewTransition name={`jacket-${t.id}`} share={{ "jacket-morph": "jacket", default: "none" }} default="none">
                           {/* eslint-disable-next-line @next/next/no-img-element */}
                           <img
                             src={`${t.imageUrl}?fit=crop&w=800&h=800`}
