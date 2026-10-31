@@ -103,11 +103,12 @@ export default async function Home() {
               <Link
                 key={t.id}
                 href={`/tracks/${t.id}`}
+                transitionTypes={["jacket-morph"]}
                 aria-label={`${t.title}${t.romaji ? ` (${t.romaji})` : ""}`}
                 className="group relative aspect-square overflow-hidden border border-bone/10 bg-ink-soft transition hover:border-bone/30"
               >
                 {t.image ? (
-                  <ViewTransition name={`jacket-${t.id}`} share="jacket">
+                  <ViewTransition name={`jacket-${t.id}`} share={{ "jacket-morph": "jacket", default: "none" }} default="none">
                     {/* eslint-disable-next-line @next/next/no-img-element */}
                     <img
                       src={`${t.image.url}?fit=crop&w=800&h=800`}

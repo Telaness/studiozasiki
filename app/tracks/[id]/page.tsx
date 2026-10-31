@@ -94,6 +94,7 @@ export default async function TrackPage({ params }: Props) {
           <div className="mb-12">
             <Link
               href="/tracks"
+              transitionTypes={["jacket-morph"]}
               className="font-en text-xs tracking-[0.4em] text-bone-dim transition hover:text-bone"
             >
               ← BACK
@@ -102,7 +103,7 @@ export default async function TrackPage({ params }: Props) {
 
           <div className="relative mx-auto aspect-square w-full max-w-xs overflow-hidden border border-bone/10 bg-ink-soft sm:max-w-sm">
             {track.image ? (
-              <ViewTransition name={`jacket-${track.id}`} share="jacket">
+              <ViewTransition name={`jacket-${track.id}`} share={{ "jacket-morph": "jacket", default: "none" }} default="none">
                 {/* eslint-disable-next-line @next/next/no-img-element */}
                 <img
                   src={`${track.image.url}?fit=crop&w=800&h=800`}
